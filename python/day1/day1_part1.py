@@ -5,7 +5,7 @@ INITIAL_VALUE = 50
 result = 0
 current_value = INITIAL_VALUE
 
-with open("../resources/day1/input.txt", "r") as file:
+with open("../../resources/day1/input.txt", "r") as file:
     for line in file:
         command = line.strip()
         direction = command[0]
