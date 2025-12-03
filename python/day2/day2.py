@@ -14,12 +14,12 @@ def find_invalid_ids(ids_range):
     end = ids_range[1]
     print(f"Finding invalid IDs between {start} and {end}")
     for id in range(start, end + 1):
-        if is_invalid(id):
+        if is_invalid_v2(id):
             invalid_ids.append(id)
     return invalid_ids
 
 
-def is_invalid(id):
+def is_invalid_v1(id):
     if get_number_digits(id) % 2 == 1:
         return False
     else:
@@ -31,6 +31,30 @@ def is_invalid(id):
             if first_half[i] != second_half[i]:
                 return False
         return True
+
+
+def is_invalid_v2(id):
+    for i in range(1, get_number_digits(id) // 2 + 1):
+        if i == 1 or get_number_digits(id) % i == 0:
+            if not check_validity(i, id):
+                return True
+    return False
+
+
+def check_validity(pattern_size, id):
+    strigified_id = str(id)
+    parts = []
+
+    number_of_parts = len(strigified_id) // pattern_size
+    for i in range(number_of_parts):
+        part = strigified_id[i * pattern_size : (i + 1) * pattern_size]
+        parts.append(part)
+
+    first_part = parts[0]
+    for part in parts[1:]:
+        if part != first_part:
+            return True
+    return False
 
 
 def get_number_digits(id):
@@ -58,11 +82,8 @@ if __name__ == "__main__":
 
     list_of_invalid_ids = []
     for id_range in ranges:
-        print(f"Range: {id_range[0]} to {id_range[1]}")
         invalid_ids = find_invalid_ids(id_range)
         for invalid_id in invalid_ids:
             list_of_invalid_ids.append(invalid_id)
-
-        print(f"Invalid IDs: {invalid_ids}")
 
     print(f"Sum invalid IDs: {sum(list_of_invalid_ids)}")
